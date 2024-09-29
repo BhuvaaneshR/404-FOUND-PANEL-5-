@@ -9,7 +9,8 @@ function EventManagementSystem() {
     eventName: "",
     desc: "",
     datee: "",
-    time: "",
+    e_time: "",
+    en_time:"",
     rules: "",
     contact: "",
   });
@@ -34,7 +35,8 @@ function EventManagementSystem() {
       eventName: "",
       desc: "",
       datee: "",
-      time: "",
+      e_time: "",
+      en_time:"",
       rules: "",
       contact: "",
     });
@@ -50,7 +52,8 @@ function EventManagementSystem() {
       eventName: "",
       desc: "",
       datee: "",
-      time: "",
+      e_time: "",
+      en_time:"",
       rules: "",
       contact: "",
     });
@@ -65,7 +68,8 @@ function EventManagementSystem() {
       eventName: "",
       desc: "",
       datee: "",
-      time: "",
+      e_time: "",
+      en_time:"",
       rules: "",
       contact: "",
     });
@@ -80,7 +84,7 @@ function EventManagementSystem() {
       alert("Date and description are required.");
       return false;
     }
-    if (book.time <= 0) {
+    if (book.e_time <= 0 || book.en_time <= 0) {
       alert("Time must be a positive number.");
       return false;
     }
@@ -100,6 +104,7 @@ function EventManagementSystem() {
         desc: "The event was fantastic fabulous ",
         datee: "02-10-2024",
         e_time: "08:00",
+        en_time: "17:00",
         rules: "follow the speciifed rules",
         contact: "6369106579",
       },
@@ -108,6 +113,7 @@ function EventManagementSystem() {
         desc: "ThThe event was fantastic fabulous ",
         datee: "03-10-2024",
         e_time: "09:00",
+        en_time: "15:00",
         rules: " follow the speciifed rules",
         contact: "6369106579",
       },
@@ -168,11 +174,11 @@ function EventManagementSystem() {
         <div id="addForm" className="form-container">
           <form onSubmit={handleAddBook}>
             <input type="hidden" name="action" value="add" />
-            <label htmlFor="event_name">Event Name:</label>
+            <label htmlFor="eventName">Event Name:</label>
             <input
               type="text"
-              id="event_name"
-              name="eventName "
+              id="eventName"
+              name="eventName"
               value={book.eventName}
               onChange={handleFormChange}
               required
@@ -313,6 +319,16 @@ function EventManagementSystem() {
             />
             <br />
             <br />
+            <label htmlFor="en_time">End Time:</label>
+            <input
+              type="time"
+              id="en_time"
+              name="en_time"
+              value={book.en_time}
+              onChange={handleFormChange}
+            />
+            <br />
+            <br />
             <label htmlFor="rules">Rules:</label>
             <input
               type="text"
@@ -371,6 +387,7 @@ function EventManagementSystem() {
                 <th>Event Description</th>
                 <th>Event Date</th>
                 <th>Start Time</th>
+                <th>End Time</th>
                 <th>Rules</th>
                 <th>Contact No</th>
               </tr>
@@ -382,6 +399,7 @@ function EventManagementSystem() {
                   <td>{book.desc}</td>
                   <td>{book.datee}</td>
                   <td>{book.e_time}</td>
+                  <td>{book.en_time}</td>
                   <td>{book.rules}</td>
                   <td>{book.contact}</td>
                 </tr>

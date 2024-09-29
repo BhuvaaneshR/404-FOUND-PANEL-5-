@@ -5,13 +5,13 @@ import Navbar from './components/Navbar';
 import ParticipantPage from './components/ParticipantPage';
 import OrganizerPage from './components/OrganizerPage';
 
-const userRole = 'organizer'; // Define the user role here
+const userRole = 'participant'; // Define the user role here
 
 function App() {
   return (
     <div className="app">
+      <ParticipantPage/>
       <div className="page-content">
-        {userRole === 'participant' ? <ParticipantPage /> : <OrganizerPage />}
       </div>
     </div>
   );
