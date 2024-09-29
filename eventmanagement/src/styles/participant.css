@@ -1,0 +1,25 @@
+.participant-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .event-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+  }
+  
+  .event-grid div {
+    background-color: #060606;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: perspective(1000px) rotateY(0deg);
+    transition: transform 0.5s;
+  }
+  
+  .event-grid div:hover {
+    transform: perspective(1000px) rotateY(10deg);
+  }
