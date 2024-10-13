@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import "../styles/organizer.css";
+import axios from "axios";
 import u_logo from "../assets/user-profile.png";
+import "../styles/organizer.css";
 
 function EventManagementSystem() {
   const [showForm, setShowForm] = useState("");
@@ -10,7 +11,7 @@ function EventManagementSystem() {
     desc: "",
     datee: "",
     e_time: "",
-    en_time:"",
+    en_time: "",
     rules: "",
     contact: "",
   });
@@ -19,41 +20,74 @@ function EventManagementSystem() {
     const { name, value } = event.target;
     setBook({ ...book, [name]: value });
   };
-  const [poster, setPoster] = useState(null);
+
+  const [poster, setPoster] = useState(null); 
 
   const handlePosterChange = (e) => {
-    setPoster(e.target.files[0]);
+    setPoster(e.target.files[0]); // Handle file input without controlling its value
   };
 
   const handleAddBook = (event) => {
     event.preventDefault();
     if (!validateForm()) return;
-    // Send a POST request to the server to add the book
-    console.log("Add book:", book);
+
+    // Prepare FormData to include file upload
+    const formData = new FormData();
+    formData.append("eventName", book.eventName);
+    formData.append("desc", book.desc);
+    formData.append("datee", book.datee);
+    formData.append("e_time", book.e_time);
+    formData.append("en_time", book.en_time);
+    formData.append("rules", book.rules);
+    formData.append("contact", book.contact);
+    if (poster) formData.append("poster", poster); // Add the poster file to the form data
+
+    axios
+      .post("http://localhost:5555/eventss", formData)
+      .then((response) => {
+        console.log(response.data);
+        setBookList([...bookList, response.data]);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
     // Reset the form
     setBook({
       eventName: "",
       desc: "",
       datee: "",
       e_time: "",
-      en_time:"",
+      en_time: "",
       rules: "",
       contact: "",
     });
-    setPoster(null);
+    setPoster(null); // Reset the poster
   };
+ 
 
   const handleEditBook = (event) => {
     event.preventDefault();
-    // Send a POST request to the server to edit the book
-    console.log("Edit Event:", book);
+    axios
+      .put(`http://localhost:5555/eventss/${book._id}`, book)
+      .then((response) => {
+        console.log(response.data);
+        setBookList(
+          bookList.map((book) =>
+            book._id === response.data._id ? response.data : book
+          )
+        );
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     // Reset the form
     setBook({
       eventName: "",
       desc: "",
       datee: "",
       e_time: "",
-      en_time:"",
+      en_time: "",
       rules: "",
       contact: "",
     });
@@ -61,15 +95,22 @@ function EventManagementSystem() {
 
   const handleDeleteBook = (event) => {
     event.preventDefault();
-    // Send a POST request to the server to delete the book
-    console.log("Delete Event:", book);
+    axios
+      .delete(`http://localhost:5555/eventss/${book._id}`)
+      .then((response) => {
+        console.log(response.data);
+        setBookList(bookList.filter((book) => book._id !== response.data._id));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     // Reset the form
     setBook({
       eventName: "",
       desc: "",
       datee: "",
       e_time: "",
-      en_time:"",
+      en_time: "",
       rules: "",
       contact: "",
     });
@@ -96,29 +137,15 @@ function EventManagementSystem() {
   };
 
   const displayBooks = () => {
-    // Send a POST request to the server to fetch books
-    // For demonstration purposes, I'm using a mock API
-    const mockBooks = [
-      {
-        eventName: "TechTopia",
-        desc: "The event was fantastic fabulous ",
-        datee: "02-10-2024",
-        e_time: "08:00",
-        en_time: "17:00",
-        rules: "follow the speciifed rules",
-        contact: "6369106579",
-      },
-      {
-        eventName: "Tech-a-twist",
-        desc: "ThThe event was fantastic fabulous ",
-        datee: "03-10-2024",
-        e_time: "09:00",
-        en_time: "15:00",
-        rules: " follow the speciifed rules",
-        contact: "6369106579",
-      },
-    ];
-    setBookList(mockBooks);
+    axios
+      .get("http://localhost:5555/eventss")
+      .then((response) => {
+        console.log(response.data);
+        setBookList(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const goBackToMenu = () => {
@@ -254,7 +281,7 @@ function EventManagementSystem() {
               type="file"
               id="poster"
               name="poster"
-              onChange={(e) => handlePosterChange(e)}
+              onChange={handlePosterChange} // Do not set value here
               required
             />
             <br />
@@ -346,6 +373,17 @@ function EventManagementSystem() {
               id="contact"
               name="contact"
               value={book.contact}
+              onChange={handleFormChange}
+              required
+            />
+            <br />
+            <br />
+            <label htmlFor="poster">Contact No:</label>
+            <input
+              type="file"
+              id="poster"
+              name="poster"
+              value={book.poster}
               onChange={handleFormChange}
               required
             />

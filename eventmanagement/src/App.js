@@ -1,22 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import './index.css';
-import Navbar from './components/Navbar';
-import ParticipantPage from './components/ParticipantPage';
 import OrganizerPage from './components/OrganizerPage';
-
-const userRole = 'participant'; // Define the user role here
+import comp from './components/comp';
 
 function App() {
   return (
     <div className="app">
-      <ParticipantPage/>
-      <div className="page-content">
-      </div>
+      <OrganizerPage />
     </div>
   );
 }
 
 export default App;
 
-ReactDOM.render(<App />, document.getElementById('root'));

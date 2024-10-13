@@ -24,7 +24,7 @@ router.post('/',async(req,res)=>{
             e_time:req.body.e_time,
             en_time:req.body.en_time, 
             rules:req.body.rules ,
-            contact:req.body.contact,
+            contact:req.body.contact
         };
         const  event = await events.create(eventparams);
         return res.status(201).send(event);
